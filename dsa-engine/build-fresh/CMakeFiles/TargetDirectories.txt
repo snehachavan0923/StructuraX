@@ -1,0 +1,5 @@
+/Users/sujalchavan/Documents/StructureX/dsa-engine/build-fresh/CMakeFiles/structurax_engine.dir
+/Users/sujalchavan/Documents/StructureX/dsa-engine/build-fresh/CMakeFiles/engine_tests.dir
+/Users/sujalchavan/Documents/StructureX/dsa-engine/build-fresh/CMakeFiles/test.dir
+/Users/sujalchavan/Documents/StructureX/dsa-engine/build-fresh/CMakeFiles/edit_cache.dir
+/Users/sujalchavan/Documents/StructureX/dsa-engine/build-fresh/CMakeFiles/rebuild_cache.dir

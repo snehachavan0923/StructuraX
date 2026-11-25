@@ -1,0 +1,1 @@
+/usr/bin/cc -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/engine_tests.dir/tests/test_engine.c.o -o engine_tests  -Wl,-rpath,/Users/sujalchavan/Documents/StructureX/dsa-engine/build-fresh libstructurax_engine.dylib

@@ -1,0 +1,1 @@
+/usr/bin/cc -g -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o libstructurax_engine.dylib -install_name @rpath/libstructurax_engine.dylib CMakeFiles/structurax_engine.dir/src/common/engine.c.o CMakeFiles/structurax_engine.dir/src/common/trace.c.o

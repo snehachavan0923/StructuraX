@@ -1,0 +1,18 @@
+Start testing: Nov 25 09:47 IST
+----------------------------------------------------------
+1/1 Testing: engine_unit_tests
+1/1 Test: engine_unit_tests
+Command: "/Users/sujalchavan/Documents/StructureX/dsa-engine/build-cmake-verify/engine_tests"
+Directory: /Users/sujalchavan/Documents/StructureX/dsa-engine/build-cmake-verify
+"engine_unit_tests" start time: Nov 25 09:47 IST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.77 sec
+----------------------------------------------------------
+Test Passed.
+"engine_unit_tests" end time: Nov 25 09:47 IST
+"engine_unit_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 25 09:47 IST

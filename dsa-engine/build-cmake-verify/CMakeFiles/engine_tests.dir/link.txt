@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/clang -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/engine_tests.dir/tests/test_engine.c.o -o engine_tests  -Wl,-rpath,/Users/sujalchavan/Documents/StructureX/dsa-engine/build-cmake-verify libstructurax_engine.dylib

@@ -1,0 +1,32 @@
+# Environment / secrets
+.env
+*.env
+!.env.example
+frontend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Node / frontend
+node_modules/
+dist/
+.vite/
+coverage/
+playwright-report/
+test-results/
+
+# C engine build output
+dsa-engine/build/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

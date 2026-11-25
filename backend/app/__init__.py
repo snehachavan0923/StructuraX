@@ -1,0 +1,1 @@
+"""StructuraX backend application package."""
