@@ -1,13 +1,13 @@
 # StructuraX Setup Status
 
 **Checked:** 2026-11-25  
-**Scope:** Phase 1.1 setup only. No landing page, dashboard, navigation, learning UI, or DSA syllabus content was implemented. The only rendered UI is the temporary health-check integration page.
+**Scope:** Phase 1.1 setup and Phase 2 design-system foundation. No landing page, dashboard, full product navigation, learning page, or DSA syllabus content was implemented. The frontend currently renders an isolated design-system showcase with the existing live health integration.
 
 ## Summary
 
 | Component | Status |
 |---|---|
-| React / TypeScript / Vite | Set up; type-check, unit test, production build, and browser integration pass |
+| React / TypeScript / Vite | Phase 2 design foundation implemented; type-check, unit tests, production build, and browser integration pass |
 | FastAPI | Tests pass; live API served successfully in browser integration |
 | PostgreSQL / Alembic | Running; application credentials work; migration `0001` is current |
 | C DSA engine / CFFI | Fresh CMake configure, build and CTest pass with Apple Clang; the newly compiled library loads through the CFFI bridge |
@@ -29,6 +29,28 @@
 - `cd frontend && npm audit`: **0 vulnerabilities**.
 - `cd frontend && npm run test:e2e`: **1 Playwright browser test passed**. It received a live response with healthy API, database, and engine fields from `GET /api/v1/health`.
 - Verified the configured backend CORS allowlist includes the normal Vite origins `http://127.0.0.1:5173` and `http://localhost:5173`. The browser integration used free test ports `5174` and `8011` (port 5173 was already occupied) and an explicit test-only CORS origin for 5174.
+
+### Phase 2 design system
+
+- Implemented the isolated component showcase in `frontend/src/App.tsx`; retained the actual TanStack Query health request and its real error/response states.
+- Created CSS design tokens in `frontend/src/styles/tokens.css`, theme palettes in `frontend/src/styles/themes.css`, and reduced-motion overrides in `frontend/src/styles/animations.css`. Dark (`#090D18`), light (`#F6F8FC`), and system modes use semantic colors, font families, typography, spacing, layout, radius, elevation, and control-size tokens.
+- Added persisted Zustand theme preference (`frontend/src/stores/theme-store.ts`), OS change subscription (`frontend/src/hooks/use-theme.ts`), theme type declarations, and an inline initial theme application in `frontend/index.html` to limit theme flash. Theme selection updates without reload and persists in local storage.
+- Configured Space Grotesk, Inter, and JetBrains Mono font loading with system fallbacks. Google Fonts access is needed to load the named font files; local fallback fonts remain available offline.
+- Added reusable React/TypeScript foundations: buttons, card variants, form controls, badges, tooltips, toast, progress, skeleton, empty/error states, theme switcher, navigation primitives, and SVG-compatible visualizer primitives. These use the existing React, Tailwind CSS, Lucide, Framer Motion, Zustand, and `cn` utility; no dependencies were added.
+- Added reusable Framer Motion variants for fades, slides, scale, stagger, hover/press, page and modal transitions, plus a reduced-motion hook. The showcase demonstrates the reduced-motion preference.
+- Added responsive showcase sections for tokens/type, component states, navigation, visualizer primitives, motion, and the live health endpoint. No actual DSA operation state or syllabus UI was introduced.
+- Updated `frontend/src/App.test.tsx`, `frontend/src/test/setup.ts`, and added `frontend/src/components/ui/theme-switcher.test.tsx` for theme and showcase behavior. Added browser checks in `frontend/e2e/design-system.spec.ts`.
+- Phase 2 validation (run in `frontend/`):
+
+  ```sh
+  npm run typecheck
+  npm test
+  npm run build
+  npm run test:e2e
+  ```
+
+  Results: typecheck passed; **4 unit tests passed**; production build passed; **4 Playwright tests passed**, including original live API health integration, theme persistence, system preference changes, responsive widths (1440/768/390px without horizontal overflow), component-state checks, and no browser console/page errors. No npm install was required.
+- Production build emits a non-failing Vite warning: the minified JS bundle is 512.34 kB (above the configured/default 500 kB advisory threshold). No dependency or splitting configuration was introduced solely to silence it.
 
 ### Backend and database
 
