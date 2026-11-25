@@ -5,6 +5,31 @@ import { afterEach, vi } from "vitest";
 const listeners = new Set<(event: MediaQueryListEvent) => void>();
 let prefersDark = false;
 
+// Mock IntersectionObserver for Framer Motion whileInView in jsdom
+class MockIntersectionObserver {
+  root = null;
+  rootMargin = "";
+  scrollMargin = "";
+  thresholds = [];
+  disconnect = vi.fn();
+  observe = vi.fn();
+  takeRecords = vi.fn(() => []);
+  unobserve = vi.fn();
+  constructor() {}
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: MockIntersectionObserver,
+});
+
+Object.defineProperty(globalThis, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: MockIntersectionObserver,
+});
+
 afterEach(() => {
   cleanup();
   listeners.clear();

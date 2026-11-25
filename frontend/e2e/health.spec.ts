@@ -5,7 +5,7 @@ test("receives the live FastAPI health response", async ({ page }) => {
     (response) => response.url() === "http://127.0.0.1:8011/api/v1/health",
   );
 
-  await page.goto("/");
+  await page.goto("/design-system");
 
   const response = await healthResponse;
   expect(response.ok()).toBe(true);

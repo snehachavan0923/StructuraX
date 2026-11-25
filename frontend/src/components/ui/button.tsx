@@ -14,6 +14,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "sm" | "md" | "lg" | "icon";
   loading?: boolean;
   leadingIcon?: ReactNode;
+  trailingIcon?: ReactNode;
 };
 
 export function Button({
@@ -21,6 +22,7 @@ export function Button({
   size = "md",
   loading = false,
   leadingIcon,
+  trailingIcon,
   disabled,
   className,
   children,
@@ -39,6 +41,7 @@ export function Button({
         leadingIcon
       )}
       {size !== "icon" && children}
+      {trailingIcon}
     </button>
   );
 }

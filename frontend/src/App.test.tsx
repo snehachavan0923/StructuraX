@@ -7,7 +7,7 @@ vi.mock("./lib/api", () => ({
   fetchHealth: vi.fn(() => new Promise(() => {})),
 }));
 
-describe("design system preview", () => {
+describe("StructuraX Landing Page & Application Shell", () => {
   beforeEach(() => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
@@ -20,13 +20,31 @@ describe("design system preview", () => {
     );
   });
 
-  it("preserves the live health request in the design showcase", () => {
+  it("renders the primary headline on the landing page", () => {
     expect(
-      screen.getByRole("heading", { name: "A clearer way to think in systems." }),
+      screen.getByRole("heading", { name: /Understand DSA\.\s+Don't Just Memorize It\./i }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Checking the live backend…")).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "Color theme" })).toHaveValue(
-      "system",
-    );
+  });
+
+  it("renders primary and secondary call to action buttons", () => {
+    const startButtons = screen.getAllByRole("button", { name: /Start Learning/i });
+    expect(startButtons.length).toBeGreaterThan(0);
+    expect(screen.getByRole("button", { name: /Explore Visualizations/i })).toBeInTheDocument();
+  });
+
+  it("renders navigation items including theme switcher", () => {
+    const themeComboboxes = screen.getAllByRole("combobox", { name: "Color theme" });
+    expect(themeComboboxes.length).toBeGreaterThan(0);
+    expect(themeComboboxes[0]).toHaveValue("system");
+    expect(screen.getByText("Explore DSA")).toBeInTheDocument();
+    expect(screen.getByText("Features")).toBeInTheDocument();
+    expect(screen.getByText("How It Works")).toBeInTheDocument();
+  });
+
+  it("renders the animated visualizer preview with live controls", () => {
+    expect(screen.getByText("Live Preview Simulation")).toBeInTheDocument();
+    expect(screen.getByText("Pause")).toBeInTheDocument();
+    expect(screen.getByText("Reset")).toBeInTheDocument();
+    expect(screen.getByText("+ Insert")).toBeInTheDocument();
   });
 });
