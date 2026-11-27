@@ -5,6 +5,15 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    port: 5174,
+    proxy: {
+      "/api": {
+        target: process.env.VITE_BACKEND_URL || "http://127.0.0.1:8011",
+        changeOrigin: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

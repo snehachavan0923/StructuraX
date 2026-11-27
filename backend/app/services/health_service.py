@@ -6,18 +6,14 @@ from app.services.engine_service import EngineService
 
 
 class HealthService:
-    def __init__(
-        self, repository: HealthRepository, engine_service: EngineService
-    ) -> None:
+    def __init__(self, repository: HealthRepository, engine_service: EngineService) -> None:
         self.repository = repository
         self.engine_service = engine_service
 
     def check(self) -> HealthResponse:
         database_ok, database_detail = self.repository.check_database()
         database = ComponentReport(
-            status=(
-                ComponentStatus.HEALTHY if database_ok else ComponentStatus.DEGRADED
-            ),
+            status=(ComponentStatus.HEALTHY if database_ok else ComponentStatus.DEGRADED),
             detail=database_detail,
         )
         engine = self.engine_service.describe()

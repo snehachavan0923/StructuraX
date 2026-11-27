@@ -29,7 +29,13 @@ class Settings(BaseSettings):
     postgres_db: str = "structurax_dev"
     database_url: str | None = None
 
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    cors_origins: str = (
+        "http://localhost:5173,http://127.0.0.1:5173,"
+        "http://localhost:5174,http://127.0.0.1:5174,"
+        "http://localhost:5175,http://127.0.0.1:5175,"
+        "http://localhost:3000,http://127.0.0.1:3000,"
+        "http://localhost:4173,http://127.0.0.1:4173"
+    )
 
     jwt_secret: str = ""
     ai_provider_api_key: str = ""
