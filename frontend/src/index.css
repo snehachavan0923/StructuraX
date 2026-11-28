@@ -1646,3 +1646,100 @@ p {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   PHASE 1B — IMMERSIVE DSA STUDIO
+   ========================================================================== */
+
+.studio-shell {
+  background-image:
+    radial-gradient(circle at 15% -10%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 36%),
+    radial-gradient(circle at 90% 0%, color-mix(in srgb, var(--secondary) 10%, transparent), transparent 34%);
+}
+
+.studio-topbar {
+  transition: background-color 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+}
+
+.studio-rail nav::-webkit-scrollbar,
+.studio-main::-webkit-scrollbar,
+.studio-inspector ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.studio-rail nav::-webkit-scrollbar-thumb,
+.studio-main::-webkit-scrollbar-thumb,
+.studio-inspector ::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+.studio-stagebar {
+  backdrop-filter: blur(14px);
+}
+
+.studio-canvas {
+  position: relative;
+}
+
+.studio-canvas::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--primary) 8%, transparent), transparent 32%),
+    radial-gradient(circle at 80% 70%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 38%);
+  animation: studio-ambient 18s ease-in-out infinite alternate;
+}
+
+.studio-inspector-block > div:last-child,
+.studio-inspector-block > pre {
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.studio-inspector-block:hover > pre,
+.studio-inspector-block:hover > div:last-child {
+  border-color: var(--border-strong);
+}
+
+.studio-node {
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease, background-color 220ms ease;
+}
+
+.studio-node--active {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 60%, transparent), 0 12px 30px -18px var(--primary);
+}
+
+.studio-connection {
+  transition: stroke 220ms ease, opacity 220ms ease;
+}
+
+.studio-connection--active {
+  stroke: var(--primary);
+  opacity: 1;
+}
+
+.studio-deck {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 70%, transparent), var(--surface));
+}
+
+@keyframes studio-ambient {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.75; }
+  100% { transform: translate3d(2%, -1%, 0) scale(1.04); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-canvas::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .studio-stagebar {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

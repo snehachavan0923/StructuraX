@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {
+  fetchHealth,
   runExecution,
   checkPrediction,
   checkDebugging,
@@ -10,6 +11,7 @@ import type { ExecutionTrace } from "../../lib/api";
 import { TraceVisualizer } from "../../components/visualizer/TraceVisualizer";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/form-controls";
+import { useStudio } from "../../context/StudioContext";
 import {
   BookOpen,
   Play,
@@ -28,6 +30,7 @@ import {
 } from "lucide-react";
 
 export function SinglyLinkedListWorkspace() {
+  const { activeStage, setActiveStage } = useStudio();
   const [activeTab, setActiveTab] = useState<
     "concept" | "animation" | "try" | "predict" | "debug" | "quiz" | "ai" | "progress"
   >("animation");
@@ -37,6 +40,7 @@ export function SinglyLinkedListWorkspace() {
   const [activeTrace, setActiveTrace] = useState<ExecutionTrace | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [engineStatus, setEngineStatus] = useState<"checking" | "ready" | "degraded">("checking");
 
   // Inputs for Try It Yourself
   const [inputValue, setInputValue] = useState<number>(7);
@@ -73,6 +77,14 @@ export function SinglyLinkedListWorkspace() {
     quizScore: 0,
   });
 
+  useEffect(() => {
+    setActiveTab(activeStage);
+  }, [activeStage]);
+
+  useEffect(() => {
+    setActiveStage(activeTab);
+  }, [activeTab, setActiveStage]);
+
   // Execute C Engine Operation
   const handleExecute = async (
     op: SllOperationType,
@@ -91,6 +103,7 @@ export function SinglyLinkedListWorkspace() {
         position: pos ?? inputPosition,
       });
       setActiveTrace(trace);
+      setEngineStatus("ready");
       if (trace.validation.valid) {
         setCurrentList(trace.final_state.nodes ?? []);
         setProgress((prev) => ({
@@ -106,10 +119,29 @@ export function SinglyLinkedListWorkspace() {
         err.message ||
         "Failed to connect to StructuraX backend C engine. Ensure backend is running.";
       setErrorMessage(detail);
+      setEngineStatus("degraded");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    let active = true;
+    fetchHealth()
+      .then((health) => {
+        if (active) {
+          setEngineStatus((prev) =>
+            prev === "checking" ? (health.engine.status === "healthy" ? "ready" : "degraded") : prev,
+          );
+        }
+      })
+      .catch(() => {
+        if (active) setEngineStatus((prev) => (prev === "checking" ? "degraded" : prev));
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Automatically load initial list trace on mount
   useEffect(() => {
@@ -198,9 +230,29 @@ export function SinglyLinkedListWorkspace() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-xs text-emerald-600 dark:text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            C Engine Ready
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-xs ${
+              engineStatus === "ready"
+                ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                : engineStatus === "checking"
+                ? "border-[var(--border)] bg-[var(--surface-elevated)] text-[var(--text-secondary)]"
+                : "border-rose-500/30 bg-rose-500/10 text-rose-500"
+            }`}
+          >
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                engineStatus === "ready"
+                  ? "bg-emerald-500 animate-pulse"
+                  : engineStatus === "checking"
+                  ? "bg-[var(--text-secondary)] animate-pulse"
+                  : "bg-rose-500"
+              }`}
+            />
+            {engineStatus === "ready"
+              ? "C Engine Ready"
+              : engineStatus === "checking"
+              ? "Checking Engine"
+              : "Engine Unavailable"}
           </span>
         </div>
       </div>

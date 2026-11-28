@@ -17,6 +17,9 @@ import {
 import { Button } from "../ui/button";
 import type { ExecutionTrace } from "../../lib/api";
 import { usePrefersReducedMotion } from "../../hooks/use-reduced-motion";
+import { useStudio } from "../../context/StudioContext";
+
+const BASE_STEP_MS = 1200;
 
 interface TraceVisualizerProps {
   trace: ExecutionTrace | null;
@@ -34,6 +37,7 @@ export function TraceVisualizer({
   mode = "singly",
 }: TraceVisualizerProps) {
   const reducedMotion = usePrefersReducedMotion();
+  const { setTraceState } = useStudio();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
@@ -54,7 +58,12 @@ export function TraceVisualizer({
   useEffect(() => {
     setCurrentStepIndex(0);
     setIsPlaying(false);
+    setPlaybackSpeed(1);
   }, [trace?.operation_id]);
+
+  useEffect(() => {
+    setTraceState({ trace, stepIndex: currentStepIndex, isPlaying, speed: playbackSpeed });
+  }, [trace, currentStepIndex, isPlaying, playbackSpeed, setTraceState]);
 
   // Step-by-step playback timer with variable speed
   useEffect(() => {
@@ -65,7 +74,7 @@ export function TraceVisualizer({
       return;
     }
 
-    const intervalMs = Math.round(1200 / playbackSpeed);
+    const intervalMs = Math.round(BASE_STEP_MS / playbackSpeed);
     const timer = setTimeout(() => {
       setCurrentStepIndex((prev) => Math.min(prev + 1, trace.events.length - 1));
     }, intervalMs);
@@ -232,12 +241,16 @@ export function TraceVisualizer({
                     </AnimatePresence>
 
                     {/* Node Box */}
-                    <div
-                      className={`flex h-16 ${
+                    <motion.div
+                      layout={!reducedMotion}
+                      initial={reducedMotion ? false : { opacity: 0, scale: 0.94 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      className={`studio-node flex h-16 ${
                         activeMode === "doubly" ? "w-28 md:w-32" : "w-24 md:w-28"
-                      } md:h-18 rounded-xl border transition-all duration-200 overflow-hidden ${
+                      } md:h-18 rounded-xl border overflow-hidden ${
                         isTarget
-                          ? "border-[var(--primary)] bg-[var(--surface-elevated)] ring-2 ring-[var(--primary)]/30 shadow-md"
+                          ? "studio-node--active border-[var(--primary)] bg-[var(--surface-elevated)] ring-2 ring-[var(--primary)]/30 shadow-md"
                           : "border-[var(--border-strong)] bg-[var(--surface)]"
                       }`}
                     >
@@ -270,7 +283,7 @@ export function TraceVisualizer({
                           }`}
                         />
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Symbolic Address and Head/Tail indicator */}
                     <div className="flex items-center gap-1 mt-1 font-mono text-[10px] text-[var(--text-secondary)]">
@@ -285,9 +298,23 @@ export function TraceVisualizer({
                   {/* Inter-node connection arrows */}
                   {idx < displayNodes.length - 1 && (
                     activeMode === "doubly" ? (
-                      <ArrowLeftRight size={18} className="text-[var(--accent)]" />
+                      <motion.span
+                        initial={reducedMotion ? false : { opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: reducedMotion ? 0 : 0.24, delay: reducedMotion ? 0 : idx * 0.04 }}
+                        className="studio-connection studio-connection--active flex items-center"
+                      >
+                        <ArrowLeftRight size={18} className="text-[var(--accent)]" />
+                      </motion.span>
                     ) : (
-                      <ArrowRight size={18} className="text-[var(--text-secondary)]/50" />
+                      <motion.span
+                        initial={reducedMotion ? false : { opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: reducedMotion ? 0 : 0.24, delay: reducedMotion ? 0 : idx * 0.04 }}
+                        className="studio-connection flex items-center"
+                      >
+                        <ArrowRight size={18} className="text-[var(--text-secondary)]/50" />
+                      </motion.span>
                     )
                   )}
                 </div>
@@ -360,8 +387,8 @@ export function TraceVisualizer({
               onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
               className="bg-transparent text-xs text-[var(--text-primary)] focus:outline-none cursor-pointer"
             >
+              <option value={0.5}>0.5x</option>
               <option value={1}>1.0x</option>
-              <option value={1.5}>1.5x</option>
               <option value={2}>2.0x</option>
             </select>
           </div>

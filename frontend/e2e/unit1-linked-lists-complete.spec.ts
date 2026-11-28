@@ -4,15 +4,15 @@ test.describe("Unit I: Linked Lists & Memory Allocation Complete E2E Suite", () 
   test("1. Curriculum Navigation Map lists all Unit I topics", async ({ page }) => {
     await page.goto("/curriculum");
     await expect(page.getByRole("heading", { name: "StructuraX Curriculum" })).toBeVisible();
-    await expect(page.getByText("Unit I: Introduction & Linked Lists")).toBeVisible();
-    await expect(page.getByText("Completed (C Engine Powered)")).toBeVisible();
+    await expect(page.getByText("Memory Allocation & Linked Lists")).toBeVisible();
+    await expect(page.getByText("Live — C Engine Powered")).toBeVisible();
 
     // Check all subtopic links
-    await expect(page.getByText("Static & Dynamic Memory")).toBeVisible();
-    await expect(page.getByText("Singly Linked List (13 Ops)")).toBeVisible();
-    await expect(page.getByText("Doubly Linked List (16 Ops)")).toBeVisible();
-    await expect(page.getByText("Circular Linked List (12 Ops)")).toBeVisible();
-    await expect(page.getByText("Polynomial & Applications")).toBeVisible();
+    await expect(page.getByRole("main").getByText("Static & Dynamic Memory")).toBeVisible();
+    await expect(page.getByRole("main").getByText("Singly Linked List (13 Ops)")).toBeVisible();
+    await expect(page.getByRole("main").getByText("Doubly Linked List (16 Ops)")).toBeVisible();
+    await expect(page.getByRole("main").getByText("Circular Linked List (12 Ops)")).toBeVisible();
+    await expect(page.getByRole("main").getByText("Polynomial & Applications")).toBeVisible();
   });
 
   test("2. Memory Allocation Workspace (Stack vs Heap, Malloc, Free, Leaks)", async ({ page }) => {

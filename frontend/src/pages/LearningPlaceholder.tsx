@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { AppShell } from "../components/layout/AppShell";
+import { StudioShell } from "../components/studio/StudioShell";
+import { StudioProvider } from "../context/StudioContext";
 import { SinglyLinkedListWorkspace } from "../components/learning/SinglyLinkedListWorkspace";
 import { DoublyLinkedListWorkspace } from "../components/learning/DoublyLinkedListWorkspace";
 import { CircularLinkedListWorkspace } from "../components/learning/CircularLinkedListWorkspace";
@@ -26,12 +27,13 @@ export default function LearningPlaceholder() {
     .join(" ");
 
   return (
-    <AppShell
-      breadcrumbs={[
-        { label: "Curriculum", href: "/curriculum" },
-        { label: formattedTitle },
-      ]}
+    <StudioProvider
+      key={topicId}
+      topicId={topicId ?? "topic"}
+      topicTitle={formattedTitle}
+      initialStage={isMemoryAllocation ? "concept" : "animation"}
     >
+      <StudioShell>
       {isSinglyLinkedList ? (
         <SinglyLinkedListWorkspace />
       ) : isDoublyLinkedList ? (
@@ -76,6 +78,7 @@ export default function LearningPlaceholder() {
           </div>
         </div>
       )}
-    </AppShell>
+      </StudioShell>
+    </StudioProvider>
   );
 }

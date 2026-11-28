@@ -16,8 +16,8 @@ import { Button } from "../components/ui/button";
 const SYLLABUS_MODULES = [
   {
     id: "linked-lists",
-    title: "Unit I: Introduction & Linked Lists",
-    status: "Completed (C Engine Powered)",
+    title: "Memory Allocation & Linked Lists",
+    status: "Live — C Engine Powered",
     subtopics: [
       { name: "Static & Dynamic Memory", path: "/learn/memory-allocation" },
       { name: "Singly Linked List (13 Ops)", path: "/learn/singly-linked-list" },
@@ -29,7 +29,7 @@ const SYLLABUS_MODULES = [
   },
   {
     id: "stacks",
-    title: "Unit II: Stacks & Queues",
+    title: "Stacks & Queues",
     status: "Upcoming",
     subtopics: [
       { name: "Array & List Stack", path: "/learn/stacks" },
@@ -41,7 +41,7 @@ const SYLLABUS_MODULES = [
   },
   {
     id: "trees",
-    title: "Unit III: Trees & BSTs",
+    title: "Trees & Binary Search Trees",
     status: "Upcoming",
     subtopics: [
       { name: "Binary Tree Traversals", path: "/learn/trees" },
@@ -53,7 +53,7 @@ const SYLLABUS_MODULES = [
   },
   {
     id: "heaps",
-    title: "Unit IV: Heaps & Priority Queues",
+    title: "Heaps & Priority Queues",
     status: "Upcoming",
     subtopics: [
       { name: "Min/Max Heapify", path: "/learn/heaps" },
@@ -64,7 +64,7 @@ const SYLLABUS_MODULES = [
   },
   {
     id: "graphs",
-    title: "Unit V: Graphs & Networks",
+    title: "Graphs & Networks",
     status: "Upcoming",
     subtopics: [
       { name: "Breadth-First Search", path: "/learn/graphs" },
@@ -76,7 +76,7 @@ const SYLLABUS_MODULES = [
   },
   {
     id: "hashing",
-    title: "Unit VI: Hashing & Tables",
+    title: "Hashing & Tables",
     status: "Upcoming",
     subtopics: [
       { name: "Hash Functions", path: "/learn/hashing" },

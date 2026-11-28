@@ -17,7 +17,7 @@ export interface HealthResponse {
 export const apiClient = axios.create({
   baseURL:
     import.meta.env.VITE_API_BASE_URL ||
-    (typeof window !== "undefined" && window.location.port ? "/api/v1" : "http://127.0.0.1:8011/api/v1"),
+    (import.meta.env.DEV ? "/api/v1" : "http://127.0.0.1:8011/api/v1"),
   headers: {
     Accept: "application/json",
   },

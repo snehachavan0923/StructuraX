@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "../../components/ui/button";
+import { useStudio } from "../../context/StudioContext";
+import type { StudioStage } from "../../context/StudioContext";
 import {
   BookOpen,
   Play,
@@ -372,10 +374,40 @@ const LESSONS: Lesson[] = [
   },
 ];
 
+type MemoryTab = "lessons" | "sandbox" | "bugs" | "predict" | "debug" | "quiz" | "progress";
+
+const STAGE_TO_TAB: Record<StudioStage, MemoryTab> = {
+  concept: "lessons",
+  animation: "sandbox",
+  try: "sandbox",
+  predict: "predict",
+  debug: "debug",
+  quiz: "quiz",
+  ai: "bugs",
+  progress: "progress",
+};
+
+const TAB_TO_STAGE: Record<MemoryTab, StudioStage> = {
+  lessons: "concept",
+  sandbox: "animation",
+  bugs: "ai",
+  predict: "predict",
+  debug: "debug",
+  quiz: "quiz",
+  progress: "progress",
+};
+
 export function MemoryAllocationWorkspace() {
-  const [activeTab, setActiveTab] = useState<
-    "lessons" | "sandbox" | "bugs" | "predict" | "debug" | "quiz" | "progress"
-  >("lessons");
+  const { activeStage, setActiveStage } = useStudio();
+  const [activeTab, setActiveTab] = useState<MemoryTab>("lessons");
+
+  useEffect(() => {
+    setActiveTab(STAGE_TO_TAB[activeStage]);
+  }, [activeStage]);
+
+  useEffect(() => {
+    setActiveStage(TAB_TO_STAGE[activeTab]);
+  }, [activeTab, setActiveStage]);
 
   // View Mode: Beginner vs Technical
   const [viewMode, setViewMode] = useState<"beginner" | "technical">("beginner");
